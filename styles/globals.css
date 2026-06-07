@@ -1,0 +1,606 @@
+@import "tailwindcss";
+
+/* ============================================
+   NOTICE BOARD — GLASSMORPHISM DESIGN SYSTEM
+   ============================================ */
+
+/* ---------- CSS Custom Properties ---------- */
+:root {
+  /* Light mode tokens */
+  --bg-primary: #faf5ff;
+  --bg-secondary: #f3e8ff;
+  --bg-gradient-from: #f5f3ff;
+  --bg-gradient-to: #e0e7ff;
+  --bg-gradient-via: #faf5ff;
+
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(168, 85, 247, 0.15);
+  --glass-shadow: rgba(168, 85, 247, 0.04);
+  --glass-hover-shadow: rgba(168, 85, 247, 0.15);
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #64748b;
+  --text-inverse: #faf5ff;
+
+  --accent-from: #a855f7;   /* Violet */
+  --accent-to: #3b82f6;     /* Blue */
+  --accent-text: #7c3aed;
+
+  --border-color: rgba(168, 85, 247, 0.12);
+  --input-bg: rgba(255, 255, 255, 0.7);
+  --input-border: rgba(168, 85, 247, 0.2);
+  --input-focus-ring: rgba(168, 85, 247, 0.3);
+
+  --modal-backdrop: rgba(15, 23, 42, 0.4);
+
+  --skeleton-from: #e2e8f0;
+  --skeleton-to: #f1f5f9;
+
+  --toast-bg: #ffffff;
+  --toast-text: #0f172a;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #0a0915;
+  --bg-secondary: #121124;
+  --bg-gradient-from: #07060f;
+  --bg-gradient-to: #0a0915;
+  --bg-gradient-via: #0d0c1d;
+
+  --glass-bg: rgba(18, 17, 36, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: rgba(0, 0, 0, 0.5);
+  --glass-hover-shadow: rgba(168, 85, 247, 0.25);
+
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #64748b;
+  --text-inverse: #0a0915;
+
+  --accent-from: #a855f7;   /* Violet */
+  --accent-to: #3b82f6;     /* Blue */
+  --accent-text: #c084fc;
+
+  --border-color: rgba(255, 255, 255, 0.08);
+  --input-bg: rgba(18, 17, 36, 0.6);
+  --input-border: rgba(255, 255, 255, 0.10);
+  --input-focus-ring: rgba(168, 85, 247, 0.35);
+
+  --modal-backdrop: rgba(0, 0, 0, 0.75);
+
+  --skeleton-from: #1c1936;
+  --skeleton-to: #2e2a52;
+
+  --toast-bg: #121124;
+  --toast-text: #f8fafc;
+}
+
+/* ---------- Global Base Styles ---------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  color: var(--text-primary);
+  background: linear-gradient(
+    135deg,
+    var(--bg-gradient-from) 0%,
+    var(--bg-gradient-via) 50%,
+    var(--bg-gradient-to) 100%
+  );
+  min-height: 100vh;
+  transition: background 0.4s ease, color 0.3s ease;
+}
+
+/* ---------- Animations ---------- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes pulseGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes backdropIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Utility Classes ---------- */
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-fade-in-scale {
+  animation: fadeInScale 0.3s ease-out forwards;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--skeleton-from) 25%,
+    var(--skeleton-to) 50%,
+    var(--skeleton-from) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2s infinite;
+}
+
+.animate-slide-down {
+  animation: slideDown 0.3s ease-out forwards;
+}
+
+.animate-modal-in {
+  animation: modalIn 0.3s ease-out forwards;
+}
+
+.animate-backdrop-in {
+  animation: backdropIn 0.2s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* ---------- Glass Card ---------- */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px var(--glass-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px var(--glass-hover-shadow),
+    0 8px 32px var(--glass-shadow);
+}
+
+/* ---------- Glass Input ---------- */
+.glass-input {
+  background: var(--input-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--input-border);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  outline: none;
+}
+
+.glass-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.glass-input:focus {
+  border-color: var(--accent-from);
+  box-shadow: 0 0 0 3px var(--input-focus-ring);
+}
+
+/* Custom Calendar Icon Styling */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(0.3);
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.9);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* ---------- Gradient Button ---------- */
+.btn-gradient {
+  background: linear-gradient(135deg, var(--accent-from), var(--accent-to));
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.7rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 14px 0 rgba(168, 85, 247, 0.2);
+}
+
+.btn-gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4), 0 2px 10px rgba(59, 130, 246, 0.2);
+}
+
+.btn-gradient:active {
+  transform: translateY(0);
+}
+
+.btn-gradient:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ---------- Ghost Button ---------- */
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.btn-ghost:hover {
+  background: var(--glass-bg);
+  border-color: var(--accent-from);
+  color: var(--accent-text);
+}
+
+/* ---------- Danger Button ---------- */
+.btn-danger {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.7rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-danger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.35);
+}
+
+.btn-danger:active {
+  transform: translateY(0);
+}
+
+/* ---------- Badges ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+
+.badge-urgent {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.badge-normal {
+  background: rgba(34, 197, 94, 0.12);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+.badge-exam {
+  background: rgba(59, 130, 246, 0.12);
+  color: #3b82f6;
+  border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+.badge-event {
+  background: rgba(168, 85, 247, 0.12);
+  color: #a855f7;
+  border: 1px solid rgba(168, 85, 247, 0.25);
+}
+
+.badge-general {
+  background: rgba(20, 184, 166, 0.12);
+  color: #14b8a6;
+  border: 1px solid rgba(20, 184, 166, 0.25);
+}
+
+/* ---------- Layout Utilities ---------- */
+.container-main {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-main {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-main {
+    padding: 0 2rem;
+  }
+}
+
+/* ---------- Notice Grid ---------- */
+.notice-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .notice-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .notice-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-tertiary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* ---------- Toast Overrides ---------- */
+.toast-custom {
+  background: var(--toast-bg) !important;
+  color: var(--toast-text) !important;
+  border: 1px solid var(--glass-border) !important;
+  backdrop-filter: blur(12px) !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 8px 32px var(--glass-shadow) !important;
+}
+
+/* ---------- React Datepicker Custom Overrides ---------- */
+.react-datepicker-wrapper {
+  display: block !important;
+  width: 100% !important;
+}
+
+.react-datepicker {
+  font-family: inherit !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 10px 30px var(--glass-shadow) !important;
+}
+
+.react-datepicker__header {
+  border-top-left-radius: 1rem !important;
+  border-top-right-radius: 1rem !important;
+  padding-top: 0.75rem !important;
+}
+
+.react-datepicker__day,
+.react-datepicker__day-name {
+  width: 2.25rem !important;
+  line-height: 2.25rem !important;
+  margin: 0.166rem !important;
+}
+
+.react-datepicker__day--selected {
+  background: linear-gradient(135deg, var(--accent-from), var(--accent-to)) !important;
+  color: white !important;
+  border-radius: 0.5rem !important;
+  font-weight: 600 !important;
+}
+
+.react-datepicker__day--keyboard-selected {
+  background: rgba(168, 85, 247, 0.15) !important;
+  color: var(--accent-text) !important;
+  border-radius: 0.5rem !important;
+}
+
+.react-datepicker__triangle {
+  display: none !important;
+}
+
+/* Light theme (active when page is light) -> calendar is dark */
+[data-theme="light"] .react-datepicker {
+  background: #1e293b !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #f8fafc !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="light"] .react-datepicker__header {
+  background: #0f172a !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="light"] .react-datepicker__current-month,
+[data-theme="light"] .react-datepicker-time__header,
+[data-theme="light"] .react-datepicker-year-header {
+  color: #f8fafc !important;
+}
+
+[data-theme="light"] .react-datepicker__day-name, 
+[data-theme="light"] .react-datepicker__day, 
+[data-theme="light"] .react-datepicker__time-name {
+  color: #cbd5e1 !important;
+}
+
+[data-theme="light"] .react-datepicker__day:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+  border-radius: 0.5rem !important;
+}
+
+[data-theme="light"] .react-datepicker__navigation-icon::before {
+  border-color: #cbd5e1 !important;
+}
+
+[data-theme="light"] .react-datepicker__day--outside-month {
+  color: #64748b !important;
+}
+
+/* Dark theme (active when page is dark) -> calendar is light */
+[data-theme="dark"] .react-datepicker {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  color: #0f172a !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+}
+
+[data-theme="dark"] .react-datepicker__header {
+  background: #f1f5f9 !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="dark"] .react-datepicker__current-month,
+[data-theme="dark"] .react-datepicker-time__header,
+[data-theme="dark"] .react-datepicker-year-header {
+  color: #0f172a !important;
+}
+
+[data-theme="dark"] .react-datepicker__day-name, 
+[data-theme="dark"] .react-datepicker__day, 
+[data-theme="dark"] .react-datepicker__time-name {
+  color: #334155 !important;
+}
+
+[data-theme="dark"] .react-datepicker__day:hover {
+  background: rgba(0, 0, 0, 0.05) !important;
+  color: #000000 !important;
+  border-radius: 0.5rem !important;
+}
+
+[data-theme="dark"] .react-datepicker__navigation-icon::before {
+  border-color: #475569 !important;
+}
+
+[data-theme="dark"] .react-datepicker__day--outside-month {
+  color: #94a3b8 !important;
+}
