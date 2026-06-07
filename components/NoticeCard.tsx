@@ -49,7 +49,7 @@ export default function NoticeCard({
 
   return (
     <div
-      className="glass-card animate-fade-in"
+      className={`glass-card animate-fade-in ${isUrgent ? "card-urgent" : "card-normal"}`}
       style={{
         padding: "1.5rem",
         display: "flex",
@@ -57,7 +57,6 @@ export default function NoticeCard({
         gap: "1rem",
         animationDelay: `${index * 0.06}s`,
         animationFillMode: "both",
-        border: isUrgent ? "1.5px solid #ef4444" : "1.5px solid #22c55e",
       }}
     >
       {/* Top row — badges */}
