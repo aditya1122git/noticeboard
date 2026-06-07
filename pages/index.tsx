@@ -72,10 +72,6 @@ export default function Home() {
     }
   };
 
-  // Count stats
-  const urgentCount = notices.filter((n) => n.priority === "Urgent").length;
-  const totalCount = notices.length;
-
   return (
     <>
       <Head>
@@ -89,7 +85,7 @@ export default function Home() {
       <Header />
 
       <main className="container-main" style={{ paddingTop: "2rem", paddingBottom: "4rem" }}>
-        {/* Page heading with stats */}
+        {/* Page heading */}
         {!loading && notices.length > 0 && (
           <div
             className="animate-slide-down"
@@ -113,21 +109,6 @@ export default function Home() {
               >
                 {filter === "All" ? "All Notices" : `${filter} Notices`}
               </h1>
-              <p
-                style={{
-                  fontSize: "0.9rem",
-                  color: "var(--text-secondary)",
-                  marginTop: "0.25rem",
-                }}
-              >
-                {totalCount} notice{totalCount !== 1 ? "s" : ""} total
-                {urgentCount > 0 && (
-                  <span style={{ color: "#ef4444", fontWeight: 600 }}>
-                    {" "}
-                    · {urgentCount} urgent
-                  </span>
-                )}
-              </p>
             </div>
 
             {/* Filter dropdown on the right */}
